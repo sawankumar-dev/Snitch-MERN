@@ -1,5 +1,5 @@
-import userModel from "../models/auth.model.js";
 import bcrypt from "bcryptjs"
+import userModel from "../models/auth.model.js";
 import { createAccessToken, createRefreshToken, readRefreshToken } from "../utils/auth.utils.js";
 
 /**

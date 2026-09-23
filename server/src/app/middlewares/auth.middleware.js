@@ -21,3 +21,12 @@ export async function verifyJwt(req, res, next) {
         })
     }
 }
+
+export const isVendor = async (req, res, next) => {
+    if(req.user.role !== "seller") {
+        return res.status(403).json({
+            message: "user is not authorize to create product"
+        })
+    }
+    next()
+}
