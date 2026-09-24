@@ -1,59 +1,44 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-        minLength: 2,
-        maxLength: 50, 
-    },
-    description: {
-        type: String,
-        required: true,
-        minLength: 20,
-        maxLength: 500
-    },
-    images: {
-        type: [
-            {
-                type: String
-            }
-        ],
-        validate: {
-            validator: images => images.maxLength <= 5,
-            message: "A product can have at most 5 images"
-        }
-    },
-    price: {
-        amount: {
-            type: Number,
-            required: true
-        },
-        currency: {
-            type: String,
-            enum: ["INR", "USD"],
-            default: "INR"
-        }
-    },
-    sizes: [
-        {
-            size: {
-                type: String,
-                enum: ["XS", "S", "M", "L", "XL", "XXL"],
-                required: true
-            },
-            stock: {
-                type: Number,
-                min: 0,
-                default: 0
-            }
-        }
-    ],
-    seller: {
-        type: mongoose.Types.ObjectId,
-        ref: "users",
-        required: true
+  title: {
+    type: String,
+    required: true,
+    minLength: 2,
+    maxLength: 50,
+  },
+  description: {
+    type: String,
+    required: true,
+    minLength: 20,
+    maxLength: 500
+  },
+  images: {
+    type: [{ type: String }],
+    validate: {
+      // images.maxLength ki jagah images.length ka use karein
+      validator: function(images) {
+        return images.length <= 5;
+      },
+      message: "A product can have at most 5 images"
     }
-})
-const productModel = mongoose.model("product", productSchema)
+  },
+  price: {
+    amount: { type: Number, required: true },
+    currency: { type: String, enum: ["INR", "USD"], default: "INR" }
+  },
+  sizes: [
+    {
+      size: { type: String, enum: ["XS", "S", "M", "L", "XL", "XXL"], required: true },
+      stock: { type: Number, min: 0, default: 0 }
+    }
+  ],
+  seller: {
+    type: mongoose.Schema.Types.ObjectId, // mongoose.Types.ObjectId ki jagah ise use karna zyada sahi hai schema definitions me
+    ref: "users",
+    required: true
+  }
+});
+
+const productModel = mongoose.model("product", productSchema);
 export default productModel;
