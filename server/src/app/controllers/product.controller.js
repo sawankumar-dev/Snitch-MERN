@@ -29,3 +29,12 @@ export const uploadProduct = async (req, res) => {
         product
     })
 }
+
+export async function getAllProducts(req, res) {
+    const products = await productModel.find()
+    return res.status(200).json({
+        success: true,
+        message: "Products fetched successfully",
+        products
+    })
+}
