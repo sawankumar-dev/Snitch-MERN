@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, validationResult, param } from "express-validator";
 
 export const createProductValidator = [
   // 1. Title Validation
@@ -60,3 +60,36 @@ export const createProductValidator = [
     next();
   },
 ];
+
+export const unlistProductValidator = [
+  param("id")
+    .exists().withMessage("Product id is required in req params").bail()
+    .isMongoId().withMessage("Product id must be a valid mongo object id"),
+  (req, res, next) => {
+    const result = validationResult(req.body)
+    if(!result.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message:"Invalid data",
+        errors: result.array()
+      })
+    }
+    next()
+  }
+]
+export const listProductValidator = [
+  param("id")
+    .exists().withMessage("Product id is required in req params").bail()
+    .isMongoId().withMessage("Product id must be a valid mongo object id"),
+  (req, res, next) => {
+    const result = validationResult(req.body)
+    if(!result.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message:"Invalid data",
+        errors: result.array()
+      })
+    }
+    next()
+  }
+]

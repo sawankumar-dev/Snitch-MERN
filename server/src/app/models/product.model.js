@@ -37,6 +37,10 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, // mongoose.Types.ObjectId ki jagah ise use karna zyada sahi hai schema definitions me
     ref: "users",
     required: true
+  },
+  published: {
+    type: Boolean,
+    default: false,
   }
 });
 

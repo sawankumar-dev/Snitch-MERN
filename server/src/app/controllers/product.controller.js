@@ -38,3 +38,50 @@ export async function getAllProducts(req, res) {
         products
     })
 }
+
+export async function listAllProductsToSeller(req, res) {
+    const products= await productModel.find({published: true, seller: req.user._id})
+    return res.status(200).json({
+        success: true,
+        message: "Products fetched successfully",
+        data: {
+            products,
+        }
+    })
+}
+
+export async function unlistProduct(req, res) {
+    const {id} = req.params;
+    const product = await productModel.findById(id);
+    if(!product) {
+        return res.status(404).json({
+            success: false,
+            message: "Product not found"
+        })
+    }
+    await productModel.findByIdAndUpdate(id,{
+        published: true
+    })
+    return res.status(200).json({
+        success: false,
+        message: "Product unpublished successfully"
+    })
+}
+
+export async function listProduct(req, res) {
+    const {id} = req.params;
+    const product = await productModel.findById(id);
+    if(!product) {
+        return res.status(404).json({
+            success: false,
+            message: "Product not found"
+        })
+    }
+    await productModel.findByIdAndUpdate(id,{
+        published: true
+    })
+    return res.status(200).json({
+        success: true,
+        message: "Product published successfully"
+    })
+}

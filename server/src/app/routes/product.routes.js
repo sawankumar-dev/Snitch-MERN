@@ -1,7 +1,7 @@
 import { Router } from "express"
-import { createProductValidator } from "../validators/product.validator.js"
+import { createProductValidator, listProductValidator, unlistProductValidator } from "../validators/product.validator.js"
 import { isVendor, verifyJwt } from "../middlewares/auth.middleware.js"
-import { getAllProducts, uploadProduct } from "../controllers/product.controller.js"
+import { getAllProducts, listAllProductsToSeller, listProduct, unlistProduct, uploadProduct } from "../controllers/product.controller.js"
 import multer from "multer"
 
 const storage = multer.memoryStorage()
@@ -48,5 +48,8 @@ router.post(
 )
 
 router.get("/", getAllProducts)
+router.get("/seller", verifyJwt, isVendor, listAllProductsToSeller)
+router.patch("/unlist/:id", verifyJwt, isVendor, unlistProductValidator, unlistProduct)
+router.patch("/unlist/:id", verifyJwt, isVendor, listProductValidator, listProduct)
 
 export default router
